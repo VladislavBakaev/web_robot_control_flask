@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Robot Control</title>
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css" rel="stylesheet"/> -->
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/grid.css', v=2) }}">
+
+		<script>  
+			function slam(){
+				$("#contentBody").html($("#loading").html());
+				$.ajax({
+					type: "GET",  
+					url: "http://127.0.0.1:8000/api/robot_control.html",  
+					cache: false,  
+					success: function(html){  
+						$("#contentBody").html(html);  
+					},
+					error:function(xhr, status, errorThrown) { 
+        				alert(errorThrown+'\n'+status+'\n'+xhr.statusText); 
+    				}  
+  
+				});
+			};  
+				  
+			function map(){
+				$("#contentBody").html($("#loading").html());
+			};   
+		</script>  
+	</head>
+
+	<body>
+		<hr>
+		<div class="container">
+			<div>
+				<div class="col-1-4 center"> 
+					<input onclick="slam()" type="button" value="SLAM (построить карту)" style="height:60px;width:70%">
+				</div>
+				<div class="col-1-4 center">
+					<input onclick="map()" type="button" value="Разметка карты"  style="height:60px;width:70%">
+				</div>
+				<div class="col-1-4 center">	
+					<input onclick="navigation()" type="button" value="Навигация по построенной карте"  style="height:60px;width:70%">
+				</div>
+				<div class="col-1-4 center">
+					<input onclick="control()" type="button" value="Удаленное управление роботом"  style="height:60px;width:70%">
+				</div>
+			</div>
+		</div>
+
+		<div id="contentBody">
+		</div>
+
+		<div id="loading" style="display: none">
+			Идет загрузка...
+		</div>
+	</body>
+
+</html>
