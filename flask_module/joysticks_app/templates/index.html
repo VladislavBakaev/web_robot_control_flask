@@ -4,15 +4,13 @@
 	<head>
 		<title>Robot Control</title>
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-		<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css" rel="stylesheet"/> -->
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/grid.css', v=2) }}">
-
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/grid.css', v=25) }}">
 		<script>  
-			function slam(){
+			function load_content(page){
 				$("#contentBody").html($("#loading").html());
 				$.ajax({
 					type: "GET",  
-					url: "http://127.0.0.1:8000/api/robot_control.html",  
+					url: "http://127.0.0.1:8000/api/"+page,  
 					cache: false,  
 					success: function(html){  
 						$("#contentBody").html(html);  
@@ -20,37 +18,49 @@
 					error:function(xhr, status, errorThrown) { 
         				alert(errorThrown+'\n'+status+'\n'+xhr.statusText); 
     				}  
-  
 				});
 			};  
 				  
 			function map(){
 				$("#contentBody").html($("#loading").html());
+				$.ajax({
+					type: "GET",  
+					url: "http://127.0.0.1:8000/api/map_zone.html",  
+					cache: false,  
+					success: function(html){  
+						$("#contentBody").html(html);  
+					},
+					error:function(xhr, status, errorThrown) { 
+        				alert(errorThrown+'\n'+status+'\n'+xhr.statusText); 
+    				}  
+				});
 			};   
 		</script>  
 	</head>
 
 	<body>
 		<hr>
-		<div class="container">
+		<div id="container-header">
 			<div>
 				<div class="col-1-4 center"> 
-					<input onclick="slam()" type="button" value="SLAM (построить карту)" style="height:60px;width:70%">
+					<input onclick="load_content('mapping.html')" type="button" value="SLAM (построить карту)" style="height:60px;width:70%">
 				</div>
 				<div class="col-1-4 center">
-					<input onclick="map()" type="button" value="Разметка карты"  style="height:60px;width:70%">
+					<input onclick="load_content('map_zone.html')" type="button" value="Разметка карты"  style="height:60px;width:70%">
 				</div>
 				<div class="col-1-4 center">	
-					<input onclick="navigation()" type="button" value="Навигация по построенной карте"  style="height:60px;width:70%">
+					<input onclick="load_content('')" type="button" value="Навигация по построенной карте"  style="height:60px;width:70%">
 				</div>
 				<div class="col-1-4 center">
-					<input onclick="control()" type="button" value="Удаленное управление роботом"  style="height:60px;width:70%">
+					<input onclick="load_content('')" type="button" value="Удаленное управление роботом"  style="height:60px;width:70%">
 				</div>
 			</div>
 		</div>
 
-		<div id="contentBody">
+		<hr>
+		<div id="contentBody" style="height: 600px;">
 		</div>
+		<hr>
 
 		<div id="loading" style="display: none">
 			Идет загрузка...

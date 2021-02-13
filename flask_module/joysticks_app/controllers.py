@@ -6,7 +6,7 @@ from flask import (
 import json
 from threading import Thread, Event
 
-from joysticks_app.utils import gen_frames
+from joysticks_app.utils import gen_frames, get_map_png
 from joysticks_app.test_class import MinimalPublisher, rclpy
 
 module = Blueprint('html', __name__, url_prefix=r'/api')
@@ -53,3 +53,7 @@ def video_feed():
 @module.route('/<path:path>')
 def static_file(path):
     return render_template(path)
+
+@module.route('/get_map', methods=['GET'])
+def get_map():
+    return Response(get_map_png(), mimetype='multipart/x-mixed-replace; boundary=frame')

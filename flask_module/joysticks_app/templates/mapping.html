@@ -1,0 +1,67 @@
+<div class="container" style="height: 100%;">
+    <div class="row" style="height: 100%;">
+        <div class="col-1-2 center">
+            <img src="{{ url_for('html.video_feed') }}" width="70%"/>
+        </div>
+
+        <div class="col-1-2" style="height: 100%;">
+            <div class="row" style="height: 20%;">
+                <div class="col-1-2 center">
+                    <input onclick="get_point()" type="button" value="Задать целевую точку" style="height:60px;width:70%">
+                </div>
+                <div class="col-1-2 center">
+                    <input onclick="start_slam()" type="button" value="Запустить SLAM" style="word-break: break-all; height:60px;width:70%">
+                </div>
+            </div>
+
+            <div class="row" style="height: 70%;">
+                <div class="col-1-2" style="height: 100%;">
+                    <div class="center" style="width: 100%; height: 100%;">
+                        <img src="../static/images/joystick-base.png" width="50%"/>
+                    </div>
+                    <div id="stick1" class="center" style="width: 100%; height: 100%; position: relative; bottom: 100%;">
+                        <img src="../static/images/joystick-red.png" width="20%"/>
+                    </div>
+                </div>
+                <div class="col-1-2" style="height: 100%;">
+                    <div class="row center" style="height: 50%;">
+                        <input onclick="save_map()" type="button" value="Сохранить построенную карту" style="height:60px;width:70%">
+                    </div>
+                    <div class="row center" style="height: 50%;">
+                        <input onclick="stop_slam()" type="button" value="Остановить SLAM" style="height:60px;width:70%">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row center" style="height: 10%;">
+                <p>Статус</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src='../static/js/joy.js'></script>
+
+<script>
+    let joystick1 = new JoystickController("stick1", 64, 8);
+    const chatSocket = new WebSocket(
+            'ws://' + window.location.hostname + ':5000/test'
+        );
+        document.getElementById("status2").innerText = window.location.hostname
+    function update()
+    {
+        document.getElementById("status1").innerText = "Joystick 1: " + JSON.stringify(joystick1.value);
+        chatSocket.send(JSON.stringify({
+                'value': JSON.stringify(joystick1.value),
+                'receiver_id':48414
+            }));
+    }
+
+    function loop()
+    {
+        requestAnimationFrame(loop);
+        update();
+    }
+
+    loop();
+</script>
