@@ -109,3 +109,23 @@ def stop_slam():
 @module.route('/save_map', methods=['GET'])
 def save_map():
     return Response('Map was saved')
+
+@module.route('/restart_sensors', methods=['GET'])
+def restart_sensors():
+    return Response('Sensors was restarted')
+
+@module.route('/restart_chassis', methods=['GET'])
+def restart_chassis():
+    return Response('Chassis was restarted')
+
+@module.route('/restart_system', methods=['GET'])
+def restart_system():
+    return Response('System was restarted')
+
+@module.route('/remout_control', methods=['GET'])
+def remout_control():
+    return Response('Remout control was started')
+
+@module.route('/get_states', methods=['GET'])
+def get_status():
+    return Response('Sensors, chassis and system status')

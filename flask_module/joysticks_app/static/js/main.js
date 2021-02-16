@@ -40,7 +40,6 @@ function unvisible(){
 function update()
 {
     if(current_page=="mapping"){
-        document.getElementById("status2").innerText = JSON.stringify(joystick1.value) + "  " + JSON.stringify(joystick2.value);
         chatSocket.send(JSON.stringify({
                 'value': JSON.stringify(joystick1.value),
                 'receiver_id':48414
@@ -48,7 +47,12 @@ function update()
     }
 
     if(current_page=="navigation"){
-        document.getElementById("status2").innerText = JSON.stringify(joystick1.value) + "  " + JSON.stringify(joystick2.value);
+        chatSocket.send(JSON.stringify({
+                'value': JSON.stringify(joystick2.value),
+                'receiver_id':48414
+            }));
+    }
+    if(current_page=="control"){
         chatSocket.send(JSON.stringify({
                 'value': JSON.stringify(joystick2.value),
                 'receiver_id':48414

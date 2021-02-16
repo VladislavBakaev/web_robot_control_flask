@@ -4,41 +4,45 @@
 	<head>
 		<title>Robot Control</title>
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/grid.css', v=25) }}">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/grid.css', v=6) }}">
 		<script src='../static/js/joy.js'></script>
-		<script src="../static/js/main.js?v=9"></script>
+		<script src="../static/js/main.js?v=11"></script>
 		<script src="../static/js/arrow.js?v=6"></script>
 	</head>
 
 	<body>
+		<div id="header" class="row">
+		</div>
 		<hr>
 		<div id="container-header">
-			<div>
-				<div class="col-1-4 center"> 
-					<input onclick="visible('mapping')" type="button" value="SLAM (построить карту)" style="height:60px;width:70%">
-				</div>
-				<div class="col-1-4 center">
-					<input onclick="visible('map_zone')" type="button" value="Разметка карты"  style="height:60px;width:70%">
-				</div>
-				<div class="col-1-4 center">	
-					<input onclick="visible('navigation')" type="button" value="Навигация по построенной карте"  style="height:60px;width:70%">
-				</div>
-				<div class="col-1-4 center">
-					<input onclick="visible('control')" type="button" value="Удаленное управление роботом"  style="height:60px;width:70%">
-				</div>
+			<div class="col-1-4 center" style="height: 100%;"> 
+				<input onclick="visible('mapping')" type="button" value="SLAM (построить карту)" style="height:100%; width:70%">
+			</div>
+			<div class="col-1-4 center" style="height: 100%;">
+				<input onclick="visible('map_zone')" type="button" value="Разметка карты"  style="height:100%;width:70%">
+			</div>
+			<div class="col-1-4 center" style="height: 100%;">	
+				<input onclick="visible('navigation')" type="button" value="Навигация по построенной карте"  style="height:100%;width:70%">
+			</div>
+			<div class="col-1-4 center" style="height: 100%;">
+				<input onclick="visible('control')" type="button" value="Удаленное управление роботом"  style="height:100%;width:70%">
 			</div>
 		</div>
-		<div id="status2" style="color: blue;">Page</div>
 		<hr>
-		<div id="mapping" style="height: 600px; display: none;">
-		</div>
-		<div id="map_zone" style="height: 600px; display: none;">
-		</div>
-		<div id="navigation" style="height: 600px; display: none;">
-		</div>
-		<div id="control" style="height: 600px; display: none;">
+		<div id='content-body' style="height: 600px;">
+			<div id="mapping" style="height: 100%; display: none;">
+			</div>
+			<div id="map_zone" style="height: 100%; display: none;">
+			</div>
+			<div id="navigation" style="height: 100%; display: none;">
+			</div>
+			<div id="control" style="height: 100%; display: none;">
+			</div>
 		</div>
 		<hr>
+		
+		<div id='footer' class="row">
+		</div>
 
 		<div id="loading" style="display: none">
 			Идет загрузка...
@@ -47,11 +51,33 @@
 
 	<script>
 		$(document).ready(function() {
+			update_height();
 			load_content("mapping");
 			load_content("map_zone");
 			load_content("navigation");
+			load_content("control");
+
+			var container_header = document.getElementById('container-header');
+			var inputs = container_header.querySelector('input');
 			loop();
 		 });
+		$(window).resize(function(){
+			update_height()
+		});
+		function update_height(){
+			document.getElementById("content-body").style.height = $(window).height()*0.75+"px";
+			document.getElementById("container-header").style.height = $(window).height()*0.05+"px";
+			document.getElementById("header").style.height = $(window).height()*0.05+"px";
+			document.getElementById("footer").style.height = $(window).height()*0.1+"px";
+		}
+		function update_arrow(){
+			arrow_slam.flag_point = false;
+			arrow_slam.cliked = 0;
+			arrow_nav.flag_point = false;
+			arrow_nav.cliked = 0;
+			arrow_pose.flag_point = false;
+			arrow_pose.cliked = 0;
+		}
 	</script>
 
 </html>
