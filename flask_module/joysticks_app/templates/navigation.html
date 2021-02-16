@@ -1,0 +1,64 @@
+<div class="container" style="height: 100%;">
+    <div class="row" style="height: 100%;">
+        <div class="col-1-2 center">
+            <img id='map_stream_nav' src="{{ url_for('html.video_feed') }}" width="70%"/>
+        </div>
+
+        <div class="col-1-2" style="height: 100%;">
+            <div class="row" style="height: 20%;">
+                <div class="col-1-2 center">
+                    <input onclick="get_point_nav()" type="button" value="Задать целевую точку" style="height:60px;width:70%">
+                </div>
+                <div class="col-1-2 center">
+                    <input onclick="send_flag('start_nav')" type="button" value="Запустить навигацию" style="word-break: break-all; height:60px;width:70%">
+                </div>
+            </div>
+
+            <div class="row" style="height: 70%;">
+                <div class="col-1-2" style="height: 100%;">
+                    <div class="center" style="width: 100%; height: 100%;">
+                        <img src="../static/images/joystick-base.png" width="50%"/>
+                    </div>
+                    <div id="stick2" class="center" style="height: 20%; width: 20%; position: relative; left: 40%; bottom: 60%;">
+                        <img src="../static/images/joystick-red.png" width="100%"/>
+                    </div>
+                </div>
+                <div class="col-1-2" style="height: 100%;">
+                    <div class="row center" style="height: 50%;">
+                        <input onclick="send_flag('stop_nav')" type="button" value="Остановить навигацию" style="height:60px;width:70%">
+                    </div>
+                    <div class="row center" style="height: 50%;">
+                        <input onclick="set_pose()" type="button" value="Указать текущую позицию и ориентацию робота" style="height:60px;width:70%">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row center" style="height: 10%;">
+                <p>Статус</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src='../static/js/joy.js'></script>
+<script src="../static/js/map_nav.js?v=8"></script>
+
+<script>
+    var joystick2 = new JoystickController("stick2", 64, 8);
+    var arrow_nav = new Arrow('map_stream_nav', "load_nav_point");
+    var arrow_pose = new Arrow('map_stream_nav', "load_pose");
+    
+    function get_point_nav(){
+        arrow_pose.flag_point = false;
+        arrow_pose.cliked = 0;
+        arrow_nav.flag_point = true;
+        arrow_nav.cliked = 0;
+    }
+
+    function set_pose(){
+        arrow_pose.flag_point = true;
+        arrow_pose.cliked = 0;
+        arrow_nav.flag_point = false;
+        arrow_nav.cliked = 0;
+    }
+</script>

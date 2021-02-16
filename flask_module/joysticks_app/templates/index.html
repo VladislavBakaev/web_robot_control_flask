@@ -5,6 +5,9 @@
 		<title>Robot Control</title>
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/grid.css', v=25) }}">
+		<script src='../static/js/joy.js'></script>
+		<script src="../static/js/main.js?v=9"></script>
+		<script src="../static/js/arrow.js?v=6"></script>
 	</head>
 
 	<body>
@@ -18,14 +21,14 @@
 					<input onclick="visible('map_zone')" type="button" value="Разметка карты"  style="height:60px;width:70%">
 				</div>
 				<div class="col-1-4 center">	
-					<input onclick="visible('')" type="button" value="Навигация по построенной карте"  style="height:60px;width:70%">
+					<input onclick="visible('navigation')" type="button" value="Навигация по построенной карте"  style="height:60px;width:70%">
 				</div>
 				<div class="col-1-4 center">
-					<input onclick="visible('')" type="button" value="Удаленное управление роботом"  style="height:60px;width:70%">
+					<input onclick="visible('control')" type="button" value="Удаленное управление роботом"  style="height:60px;width:70%">
 				</div>
 			</div>
 		</div>
-
+		<div id="status2" style="color: blue;">Page</div>
 		<hr>
 		<div id="mapping" style="height: 600px; display: none;">
 		</div>
@@ -43,45 +46,12 @@
 	</body>
 
 	<script>
-		var name_arr = ["mapping","map_zone","navigation","control"]
-		var current_page = "";
-
 		$(document).ready(function() {
 			load_content("mapping");
 			load_content("map_zone");
+			load_content("navigation");
+			loop();
 		 });
-		function load_content(page){
-
-			$("#"+page).html($("#loading").html());
-			$.ajax({
-				type: "GET",  
-				url: "http://127.0.0.1:8000/api/"+page+'.html',  
-				cache: false,  
-				success: function(html){  
-					$("#"+page).html(html);  
-				},
-				error:function(xhr, status, errorThrown) { 
-					alert(errorThrown+'\n'+status+'\n'+xhr.statusText); 
-				}  
-			});
-		};
-		
-		function visible(page){
-			if(current_page == page){
-				return;
-			}
-			unvisible();
-			var div = document.getElementById(page);
-			div.style.display = 'block';
-			current_page = page;
-		};
-
-		function unvisible(){
-			for(id in name_arr){
-				var div = document.getElementById(name_arr[id]);
-				div.style.display = "none";
-			}
-		};
 	</script>
 
 </html>

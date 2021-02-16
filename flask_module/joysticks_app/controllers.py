@@ -80,7 +80,23 @@ def load_zone():
 @module.route('/load_slam_point', methods=['POST'])
 def load_slam_point():
     data = request.json
-    return Response('Point was saved')
+    return Response('Slam point was saved')
+
+@module.route('/load_nav_point', methods=['POST'])
+def load_nav_point():
+    return Response('Navigation point was saved')
+
+@module.route('/load_pose', methods=['POST'])
+def load_pose():
+    return Response('Robot pose was saved')
+
+@module.route('/start_nav', methods=['GET'])
+def start_nav():
+    return Response('Navigation is working')
+
+@module.route('/stop_nav', methods=['GET'])
+def stop_nav():
+    return Response('Navigation is stoped')
 
 @module.route('/start_slam', methods=['GET'])
 def start_slam():

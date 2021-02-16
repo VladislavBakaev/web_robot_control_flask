@@ -1,13 +1,13 @@
 <div class="container" style="height: 100%;">
     <div class="row" style="height: 100%;">
         <div class="col-1-2 center">
-            <img id='map_stream' src="{{ url_for('html.video_feed') }}" width="70%"/>
+            <img id='map_stream_slam' src="{{ url_for('html.video_feed') }}" width="70%"/>
         </div>
 
         <div class="col-1-2" style="height: 100%;">
             <div class="row" style="height: 20%;">
                 <div class="col-1-2 center">
-                    <input onclick="get_point()" type="button" value="Задать целевую точку" style="height:60px;width:70%">
+                    <input onclick="get_point_slam()" type="button" value="Задать целевую точку" style="height:60px;width:70%">
                 </div>
                 <div class="col-1-2 center">
                     <input onclick="send_flag('start_slam')" type="button" value="Запустить SLAM" style="word-break: break-all; height:60px;width:70%">
@@ -40,93 +40,14 @@
     </div>
 </div>
 
-<script src='../static/js/joy.js'></script>
+<script src="../static/js/map_nav.js?v=8"></script>
 
 <script>
-
-    var point1 = [0, 0];
-    var point2 = [0, 0];
-
-    var cliked = 0;
-    var flag_point = false;
-
-    $(document).ready(function (){ 
-        var img = document.getElementById('map_stream');
-        img.onclick = image_click               
-    });
-    let joystick1 = new JoystickController("stick1", 64, 8);
-    const chatSocket = new WebSocket(
-            'ws://' + window.location.hostname + ':5000/test'
-        );
-    function update()
-    {
-        chatSocket.send(JSON.stringify({
-                'value': JSON.stringify(joystick1.value),
-                'receiver_id':48414
-            }));
-    }
-
-    function loop()
-    {
-        requestAnimationFrame(loop);
-        update();
-    }
-
-    loop();
-
-    function image_click(e){
-        var img = document.getElementById('map_stream');
-
-        if(!flag_point){
-            return
-        }
-
-        if (cliked == 0){
-            point1[0] = e.pageX - img.offsetLeft;
-            point1[1] = img.height - (e.pageY - img.offsetTop);
-            cliked = cliked+1;
-        }
-        else if(cliked == 1){
-            point2[0] = e.pageX - img.offsetLeft;
-            point2[1] = img.height - (e.pageY - img.offsetTop);
-            cliked = 0;
-            var angle = Math.atan2(point2[1]-point1[1], point2[0]-point1[0]);
-            var w = point1[0]/img.width;
-            var h = point1[1]/img.height;
-            flag_point = false;
-            $.ajax({
-                url: 'http://127.0.0.1:8000/api/load_slam_point',
-                dataType: 'text',
-                cache: false,
-                contentType: 'application/json',
-                processData: false,
-                data: JSON.stringify({"x":w, "y":h, "angle":angle}),                         
-                type: 'post',
-                success: function(script_response){
-                    alert(script_response);
-                },
-                error:function(xhr, status, errorThrown) { 
-                        alert(errorThrown+'\n'+status+'\n'+xhr.statusText); 
-                    } 
-            });
-        }
-    }
-
-    function get_point(){
-        flag_point = true;
-    }
-
-    function send_flag(route){
-        $.ajax({
-				type: "GET",  
-				url: "http://127.0.0.1:8000/api/"+route,  
-				cache: false,  
-				success: function(text){  
-					alert(text);  
-				},
-				error:function(xhr, status, errorThrown) { 
-					alert(errorThrown+'\n'+status+'\n'+xhr.statusText); 
-				}  
-			});
+    var joystick1 = new JoystickController("stick1", 64, 8);
+    var arrow_slam = new Arrow('map_stream_slam', "load_slam_point");
+    
+    function get_point_slam(){
+        arrow_slam.flag_point = true;
+        arrow_slam.cliked = 0;
     }
 </script>
