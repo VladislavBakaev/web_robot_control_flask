@@ -6,8 +6,9 @@
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/grid.css', v=6) }}">
 		<script src='../static/js/joy.js'></script>
-		<script src="../static/js/main.js?v=11"></script>
-		<script src="../static/js/arrow.js?v=6"></script>
+		<script src="../static/js/main.js"></script>
+		<script src="../static/js/arrow.js"></script>
+		<script src="../static/js/map_nav.js"></script>
 	</head>
 
 	<body>
@@ -69,14 +70,6 @@
 			document.getElementById("container-header").style.height = $(window).height()*0.05+"px";
 			document.getElementById("header").style.height = $(window).height()*0.05+"px";
 			document.getElementById("footer").style.height = $(window).height()*0.1+"px";
-		}
-		function update_arrow(){
-			arrow_slam.flag_point = false;
-			arrow_slam.cliked = 0;
-			arrow_nav.flag_point = false;
-			arrow_nav.cliked = 0;
-			arrow_pose.flag_point = false;
-			arrow_pose.cliked = 0;
 		}
 	</script>
 

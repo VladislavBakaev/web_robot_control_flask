@@ -7,7 +7,7 @@
         <div class="col-1-2" style="height: 100%;">
             <div class="row" style="height: 20%;">
                 <div class="col-1-2 center">
-                    <input onclick="get_point_slam()" type="button" value="Задать целевую точку" style="height:60px;width:70%">
+                    <input id='get_point_slam' onclick="get_point_slam()" type="button" value="Задать целевую точку" style="height:60px;width:70%">
                 </div>
                 <div class="col-1-2 center">
                     <input onclick="send_flag('start_slam')" type="button" value="Запустить SLAM" style="word-break: break-all; height:60px;width:70%">
@@ -40,11 +40,14 @@
     </div>
 </div>
 
-<script src="../static/js/map_nav.js?v=8"></script>
-
 <script>
     var joystick1 = new JoystickController("stick1", 64, 8);
-    var arrow_slam = new Arrow('map_stream_slam', "load_slam_point");
+    try{
+    var arrow_slam = new Arrow('map_stream_slam', "load_slam_point", "get_point_slam");
+    }
+    catch (e){
+        alert("slam"+e);
+    }
     
     function get_point_slam(){
         arrow_slam.flag_point = true;

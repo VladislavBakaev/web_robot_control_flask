@@ -1,8 +1,8 @@
 class Arrow{
-    constructor(img_name, url_send){
+    constructor(img_name, url_send, button_name){//, button){
         let img = document.getElementById(img_name);
         this.url_send = url_send;
-
+        let button_v = document.getElementById(button_name);
         this.point1 = [0, 0];
         this.point2 = [0, 0];
         this.cliked = 0;
@@ -44,6 +44,14 @@ class Arrow{
                 });
             }
         }
+        function check_click(e){
+            if(e.target != button_v && e.target != img){
+                self.flag_point = false;
+                self.cliked = 0;
+            }
+        }
+
+        document.addEventListener('click', check_click)
         img.addEventListener('click', image_click);
     }
 }

@@ -8,27 +8,27 @@ from flask import (
 import json
 from threading import Thread, Event
 
-from joysticks_app.utils import gen_frames, get_map_png, save_map_zone, get_map_zone_png
-from joysticks_app.test_class import MinimalPublisher, rclpy
+from joysticks_app.utils import gen_frames, get_map_png, save_map_zone, get_map_zone_png, get_image
+# from joysticks_app.test_class import MinimalPublisher, rclpy
 
 module = Blueprint('html', __name__, url_prefix=r'/api')
 #ws = Blueprint('ws', __name__, url_prefix=r'/')
 data = 0
 event = Event()
 
-def update_field(pub):
-    while True:
-        event.wait()
-        event.clear()
-        pub.timer_callback(data)
+# def update_field(pub):
+#     while True:
+#         event.wait()
+#         event.clear()
+#         pub.timer_callback(data)
 
-def ros_init():
-    rclpy.init()
+# def ros_init():
+#     rclpy.init()
 
-    minimal_publisher = MinimalPublisher()
-    update_field(minimal_publisher)
+#     minimal_publisher = MinimalPublisher()
+#     update_field(minimal_publisher)
 
-Thread(target=ros_init).start()
+# Thread(target=ros_init).start()
 
 @module.route(r'/', methods=['GET'])
 def index():
@@ -50,7 +50,7 @@ def api(socket):
 @module.route('/video_feed')
 def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(get_image(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @module.route('/<path:path>')
 def static_file(path):
