@@ -9,7 +9,7 @@ function load_content(page){
     $("#"+page).html($("#loading").html());
     $.ajax({
         type: "GET",  
-        url: "http://127.0.0.1:8000/api/"+page+'.html',  
+        url: "/static/html/"+page+'.html',  
         cache: false,  
         success: function(html){  
             $("#"+page).html(html);  

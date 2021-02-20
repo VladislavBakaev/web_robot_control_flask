@@ -7,7 +7,7 @@ function load_img_canvas(canvasName, api_metod){
     canvas = document.getElementById(canvasName);
     var ctx = canvas.getContext('2d');
     var img = new Image();
-    img.src = 'http://127.0.0.1:8000/api/'+api_metod;
+    img.src = '/api/'+api_metod;
     img.onload = test
 
     function test(){
@@ -30,7 +30,7 @@ function save_zone(){
     var form_data = new FormData();
     form_data.append('image', dataURL);
     $.ajax({
-        url: 'http://127.0.0.1:8000/api/load_zone',
+        url: '/api/load_zone',
         dataType: 'text',
         cache: false,
         contentType: false,
