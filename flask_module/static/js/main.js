@@ -2,7 +2,7 @@ var name_arr = ["mapping","map_zone","navigation","control"]
 var current_page = "";
 
 const chatSocket = new WebSocket(
-    'ws://' + window.location.hostname + ':5000/test'
+    'ws://' + window.location.hostname + ':5000/ws/joy'
 );
 
 function load_content(page){
@@ -41,21 +41,18 @@ function update()
 {
     if(current_page=="mapping"){
         chatSocket.send(JSON.stringify({
-                'value': JSON.stringify(joystick1.value),
-                'receiver_id':48414
+                'value': JSON.stringify(joystick1.value)
             }));
     }
 
     if(current_page=="navigation"){
         chatSocket.send(JSON.stringify({
-                'value': JSON.stringify(joystick2.value),
-                'receiver_id':48414
+                'value': JSON.stringify(joystick2.value)
             }));
     }
     if(current_page=="control"){
         chatSocket.send(JSON.stringify({
-                'value': JSON.stringify(joystick2.value),
-                'receiver_id':48414
+                'value': JSON.stringify(joystick2.value)
             }));
     }
 }

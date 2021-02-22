@@ -5,21 +5,9 @@ from flask import (
     make_response,
     request)
 
-import json
-from threading import Thread, Event
-
-from robot_control_app.utils import gen_frames, get_map_png, save_map_zone, get_map_zone_png, get_image
+from robot_control_app.utils import get_map_png, save_map_zone, get_map_zone_png
 
 module = Blueprint('html', __name__, url_prefix=r'/api')
-
-@module.route('/video_feed')
-def video_feed():
-    #Video streaming route. Put this in the src attribute of an img tag
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-@module.route('/<path:path>')
-def static_file(path):
-    return render_template(path)
 
 @module.route('/get_map', methods=['GET'])
 def get_map():
@@ -37,7 +25,6 @@ def get_map_zone():
 
 @module.route('/load_zone', methods=['POST'])
 def load_zone():
-    #print(request.form)
     img = request.form.get('image')
     save_map_zone(img)
     return Response('Zone was saved')
