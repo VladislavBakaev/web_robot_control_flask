@@ -28,7 +28,7 @@ class Arrow{
                 let h = self.point1[1]/img.height;
                 self.flag_point = false;
                 $.ajax({
-                    url: 'http://127.0.0.1:8000/api/'+self.url_send,
+                    url: '/api/'+self.url_send,
                     dataType: 'text',
                     cache: false,
                     contentType: 'application/json',

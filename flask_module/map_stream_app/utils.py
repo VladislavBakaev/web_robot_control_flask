@@ -17,23 +17,29 @@ def get_image(static_folder,name):
     load_path =  os.path.join(pathlib.Path(__file__).parent.parent,"static",static_folder,name)
     return load_path
 
+def start_node(node):
+    rclpy.spin(node)
+
 load_module(modules_name)
 from map_to_pic import MapToPic, rclpy
 rclpy.init()
 
-load = cv2.resize(cv2.imread(get_image("images","lazy-load.jpg")), (200, 200))
+load = cv2.imread(get_image("images","lazy-load.jpg"))
 
 def get_map_stream():
     m_t_p = MapToPic(0.3)
-    Thread(target = rclpy.spin, args=(m_t_p, )).start()
-    while True:
-        map_ = m_t_p.get_map()
-        if map_ is bool:
-            map_ = load
-        ret, buffer = cv2.imencode('.jpg', map_)
-        frame = buffer.tobytes()
-        yield (b'--frame\r\n'
-                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    ros_th = Thread(target = start_node, args=(m_t_p, )).start()
+    try:
+        while True:
+            map_ = m_t_p.get_map()
+            if isinstance(map_, bool):
+                map_ = load
+            ret, buffer = cv2.imencode('.jpg', map_)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    except KeyboardInterrupt:
+        ros_th.join()
 
 
 def gen_frames():  # generate frame by frame from camera
