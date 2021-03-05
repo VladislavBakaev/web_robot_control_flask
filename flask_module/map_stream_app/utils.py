@@ -1,12 +1,13 @@
 import cv2
 import os
 from threading import Thread
+import time
 
 import sys
 import pathlib
 
 def load_module(module_name_list):
-    ws_path = pathlib.Path(__file__).parent.parent.parent.absolute()
+    ws_path = pathlib.Path(__file__).parent.parent.parent.parent.absolute()
     for module_name in module_name_list:
         module_path = os.path.join(ws_path, module_name, module_name)
         sys.path.insert(0, module_path)
@@ -18,6 +19,7 @@ def get_image(static_folder,name):
 class MapStreamManager():
     def __init__(self):
         self.load = cv2.imread(get_image("images","lazy-load.jpg"))
+        self.rate = 30
         
     def start_node(self, node):
         rclpy.spin(node)
@@ -25,13 +27,17 @@ class MapStreamManager():
     def get_map_stream(self):
         m_t_p = MapToPic(0.3)
         ros_th = Thread(target = self.start_node, args=(m_t_p, )).start()
+        last_time = time.time()
         try:
             while True:
+                while (1/(time.time()-last_time) > 10):
+                    time.sleep(0.001)
                 map_ = m_t_p.get_map()
                 if isinstance(map_, bool):
                     map_ = self.load
                 ret, buffer = cv2.imencode('.jpg', map_)
                 frame = buffer.tobytes()
+                last_time = time.time()
                 yield (b'--frame\r\n'
                             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 

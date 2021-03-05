@@ -3,7 +3,7 @@ import subprocess
 class RosModuleManager():
     def __init__(self, name_modele):
         self.name_module = name_modele+".service"
-        self.password = "1974"
+        self.password = "nuc"
         self.start_cmd = "sudo -S systemctl start"
         self.stop_cmd = "sudo -S systemctl stop"
         self.status = "sudo -S systemctl status"
