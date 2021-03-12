@@ -16,24 +16,39 @@ class Arrow{
             }
             if (self.cliked == 0){
                 self.point1[0] = e.pageX - img.offsetLeft;
-                self.point1[1] = img.height - (e.pageY - img.offsetTop);
+                // self.point1[1] = img.height - (e.pageY - img.offsetTop);
+                self.point1[1] = e.pageY - img.offsetTop;
                 self.cliked = self.cliked+1;
             }
             else if(self.cliked == 1){
                 self.point2[0] = e.pageX - img.offsetLeft;
-                self.point2[1] = img.height - (e.pageY - img.offsetTop);
+                // self.point2[1] = img.height - (e.pageY - img.offsetTop);
+                self.point2[1] = e.pageY - img.offsetTop;
                 self.cliked = 0;
-                let angle = Math.atan2(self.point2[1]-self.point1[1], self.point2[0]-self.point1[0]);
+                let angle = -Math.atan2(self.point2[1]-self.point1[1], self.point2[0]-self.point1[0]);
                 let w = self.point1[0]/img.width;
                 let h = self.point1[1]/img.height;
                 self.flag_point = false;
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/map/resolution", false);
+                xhr.send(null);
+                let resolution = JSON.parse(xhr.responseText)['resolution'];
+
+                xhr.open("GET", "/map/origin", false);
+                xhr.send(null);
+                let origin = JSON.parse(xhr.responseText)
+
+                let x = img.naturalWidth*w*resolution - origin['x'];
+                let y = origin["y"] - img.naturalHeight*h*resolution
+
                 $.ajax({
                     url: '/api/'+self.url_send,
                     dataType: 'text',
                     cache: false,
                     contentType: 'application/json',
                     processData: false,
-                    data: JSON.stringify({"x":w, "y":h, "angle":angle}),                         
+                    data: JSON.stringify({"x":x, "y":y, "angle":angle}),                         
                     type: 'post',
                     success: function(script_response){
                         alert(script_response);

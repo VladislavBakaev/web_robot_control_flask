@@ -5,7 +5,7 @@ from flask import (
     make_response,
     request)
 
-from robot_control_app.utils import map_manager, module_manager
+from robot_control_app.utils import map_manager, module_manager, point_manager
 
 module = Blueprint('html', __name__, url_prefix=r'/api')
 
@@ -32,12 +32,13 @@ def load_zone():
 @module.route('/load_slam_point', methods=['POST'])
 def load_slam_point():
     data = request.json
-    print(data)
+    point_manager.send_point(data['x'], data['y'], data['angle'])
     return Response('Slam point was saved')
 
 @module.route('/load_nav_point', methods=['POST'])
 def load_nav_point():
     data = request.json
+    print(data)
     return Response('Navigation point was saved')
 
 @module.route('/load_pose', methods=['POST'])
@@ -66,6 +67,7 @@ def stop_slam():
 
 @module.route('/save_map', methods=['GET'])
 def save_map():
+    map_manager.save_map()
     return Response('Map was saved')
 
 @module.route('/restart_sensors', methods=['GET'])

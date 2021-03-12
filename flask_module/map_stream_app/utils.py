@@ -19,22 +19,24 @@ def get_image(static_folder,name):
 class MapStreamManager():
     def __init__(self):
         self.load = cv2.imread(get_image("images","lazy-load.jpg"))
-        self.rate = 30
+        self.rate = 10
+        self.m_t_p = MapToPic(0.3)
+        self.ros_th = Thread(target = self.start_node, args=(self.m_t_p, )).start()
+        self.map_shape = [0,0]
         
     def start_node(self, node):
         rclpy.spin(node)
 
     def get_map_stream(self):
-        m_t_p = MapToPic(0.3)
-        ros_th = Thread(target = self.start_node, args=(m_t_p, )).start()
         last_time = time.time()
         try:
             while True:
-                while (1/(time.time()-last_time) > 10):
+                while (1/(time.time()-last_time) > self.rate):
                     time.sleep(0.001)
-                map_ = m_t_p.get_map()
+                map_ = self.m_t_p.get_map()
                 if isinstance(map_, bool):
                     map_ = self.load
+                self.map_shape = list(map_.shape[:-1])
                 ret, buffer = cv2.imencode('.jpg', map_)
                 frame = buffer.tobytes()
                 last_time = time.time()
@@ -42,7 +44,16 @@ class MapStreamManager():
                             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
         except KeyboardInterrupt:
-            ros_th.join()
+            self.ros_th.join()
+
+    def save_map(self):
+        self.m_t_p.save_map()
+    
+    def get_resolution(self):
+        return self.m_t_p.get_map_resolution()
+    
+    def get_origin(self):
+        return self.m_t_p.get_map_origin()
 
     def get_frames_cam(self):
         camera = cv2.VideoCapture(0)
@@ -62,5 +73,5 @@ load_module(module_names)
 
 from map_to_pic import MapToPic, rclpy
 rclpy.init()
-
 map_stream_manager = MapStreamManager()
+        
