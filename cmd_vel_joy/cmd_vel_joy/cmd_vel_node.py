@@ -11,12 +11,26 @@ class CmdVelPublisher(Node):
         self.publisher_ = self.create_publisher(Twist, 'cmd_vel', 10)
         self.msg = Twist()
         self.max_lin = 0.25
-        self.max_ang = 0.5
+        self.max_ang = 1.0
+        self.stop_flag = False
 
     def publish_vel(self, vel):
-        self.msg.linear.x = -float(vel['y'])*self.max_lin
-        self.msg.angular.z = -float(vel['x'])*self.max_ang
-        self.publisher_.publish(self.msg)
+        y = -float(vel['y'])
+        x = -float(vel['x'])
+        if (y == x == 0.0):
+            if not self.stop_flag:
+                self.stop_flag = True
+                for _ in range(10):
+                    self.msg.linear.x = y*self.max_lin
+                    self.msg.angular.z = x*self.max_ang
+                    self.publisher_.publish(self.msg)
+            else:
+                return
+        else:
+            self.stop_flag = False
+            self.msg.linear.x = y*self.max_lin
+            self.msg.angular.z = x*self.max_ang
+            self.publisher_.publish(self.msg)
 
 
 def main(args=None):

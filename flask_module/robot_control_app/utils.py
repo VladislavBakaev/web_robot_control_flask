@@ -40,8 +40,30 @@ class MapManager():
         img = base64.b64decode(img)
         jpg_as_np = np.frombuffer(img, dtype=np.uint8)
         img = cv2.imdecode(jpg_as_np, cv2.IMREAD_UNCHANGED)
-        cv2.imwrite(get_image_path('map', 'map_zone.png'), cv2.resize(img, tuple(self.map_shape)))
+        img = cv2.resize(img, (self.map_shape[1],self.map_shape[0]))
+        cv2.imwrite(get_image_path('map', 'map_zone.png'), img)
+        self.zone_to_map_filter(img)
         return True
+
+    def zone_to_map_filter(self, zone):
+        map_ = cv2.imread(get_image_path('map', 'map.pgm'), cv2.IMREAD_COLOR)
+        filter_map = self.blend_transparent(map_, zone)
+        filter_map = cv2.cvtColor(filter_map, cv2.COLOR_BGR2GRAY)
+        cv2.imwrite(get_image_path('map', 'map_filter.pgm'), filter_map)
+        
+    def blend_transparent(self, face_img, overlay_t_img):
+        overlay_img = overlay_t_img[:,:,:3]
+        overlay_mask = overlay_t_img[:,:,3:]
+
+        background_mask = 255 - overlay_mask
+
+        overlay_mask = cv2.cvtColor(overlay_mask, cv2.COLOR_GRAY2BGR)
+        background_mask = cv2.cvtColor(background_mask, cv2.COLOR_GRAY2BGR)
+
+        face_part = (face_img * (1 / 255.0)) * (background_mask * (1 / 255.0))
+        overlay_part = (overlay_img * (1 / 255.0)) * (overlay_mask * (1 / 255.0))
+    
+        return np.uint8(cv2.addWeighted(face_part, 255.0, overlay_part, 255.0, 0.0))
     
     def save_map(self):
         dir_path = os.path.join(pathlib.Path(__file__).parent.parent.parent, 'sh_scripts', "run_map_server.sh")
@@ -100,6 +122,9 @@ class PointClientManager():
     
     def send_point(self, x, y, angle):
         self.t_p_c.send_goal(x, y, angle)
+    
+    def set_pose(self, x, y, angle):
+        self.t_p_c.set_pose(x, y, angle)
 
 module_names = ['map_to_pic']
 load_module(module_names)
