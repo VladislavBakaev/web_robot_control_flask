@@ -32,3 +32,8 @@
   width: 100%;
   float: left;
 }
+
+.arrow {
+  display: inline-block;
+  transform-origin: 50% 100%; /* Точка поворота в правом верхнем углу */
+}

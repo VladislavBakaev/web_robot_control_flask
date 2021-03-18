@@ -1,7 +1,12 @@
 <div class="container" style="height: 100%;">
     <div class="row" style="height: 100%;">
         <div class="col-1-2 center">
-            <img id='map_stream_nav' src="/map/stream" width="70%"/>
+            <div style="position: relative;">
+                <img id='map_stream_nav' src="/map/stream" width="100%"/>
+                <div id = "arr_nav" class="arrow" style ="width: 3%; position: absolute; left: 10%; top: 50%; z-index: 1; display: none;">
+                    <img src = "/static/images/arrow.png" width ="100%">
+                </div>
+            </div>
         </div>
 
         <div class="col-1-2" style="height: 100%;">
@@ -43,20 +48,20 @@
 <script>
     var joystick2 = new JoystickController("stick2", 64, 8);
 
-    var arrow_nav = new Arrow('map_stream_nav', "load_nav_point", "get_point_nav");
-    var arrow_pose = new Arrow('map_stream_nav', "load_pose", "set_pose");
+    var arrow_nav = new Arrow('map_stream_nav', "load_nav_point", "get_point_nav","arr_nav");
+    var arrow_pose = new Arrow('map_stream_nav', "load_pose", "set_pose","arr_nav");
     var stream_nav = document.getElementById('map_stream_nav');
 
-    var timerId = setInterval(updatesize, 1000);
+    var timerId = setInterval(updatesize, 100);
 
     function updatesize(){
         if (stream_nav.offsetHeight > body.offsetHeight){
             stream_nav.style.width = "auto";
-            stream_nav.style.height = '100%';
+            stream_nav.style.height = body.offsetHeight + 'px';
         }
 
-        else if (stream_nav.offsetWidth > body.offsetWidth*0.8){
-            stream_nav.style.width = "70%";
+        else{
+            stream_nav.style.width = "100%";
             stream_nav.style.height = 'auto'; 
         }
     }
