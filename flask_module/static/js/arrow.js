@@ -32,6 +32,7 @@ class Arrow{
                 self.cliked = self.cliked+1;
             }
             else if(self.cliked == 1){
+                arrow.style.display = "none";
                 self.point2[0] = e.pageX - img_pose.x;
                 self.point2[1] = e.pageY - img_pose.y;
                 self.cliked = 0;
