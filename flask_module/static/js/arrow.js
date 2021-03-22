@@ -103,8 +103,10 @@ class Arrow{
             return p;
         }
 
-        document.addEventListener('click', check_click)
+        document.addEventListener('click', check_click);
+        arrow.addEventListener("click", image_click)
         img.addEventListener('click', image_click);
         img.addEventListener('mousemove', handleMoveArrow, {passive: false});
+        arrow.addEventListener('mousemove', handleMoveArrow, {passive: false});
     }
 }

@@ -1,8 +1,7 @@
 <div class="container" style="height: 100%;">
-    <div class="row" style="height: 100%;">
-        <div class="col-1-2 center">
-            <div style="position: relative;">
-                <img id='map_stream_nav' src="/map/stream" width="100%"/>
+        <div id ='map_body_nav_row' class="col-1-2 center" style="height: 100%;">
+            <div id='map_nav_body' style="position: relative; width: 100%;">
+                <img id='map_stream_nav' src="/map/stream" width = "100%"/>
                 <div id = "arr_nav" class="arrow" style ="width: 3%; position: absolute; left: 10%; top: 50%; z-index: 1; display: none;">
                     <img src = "/static/images/arrow.png" width ="100%">
                 </div>
@@ -19,7 +18,7 @@
                 </div>
             </div>
 
-            <div class="row" style="height: 70%;">
+            <div class="row" style="height: 40%;">
                 <div class="col-1-2" style="height: 100%;">
                     <div class="center" style="width: 100%; height: 100%;">
                         <img src="/static/images/joystick-base.png" width="50%"/>
@@ -38,8 +37,9 @@
                 </div>
             </div>
 
-            <div class="row center" style="height: 10%;">
-                <p>Статус</p>
+            <div class="row center" style="height: 40%;">
+                <ul id="status_list_nav"  class="category-list">
+                </ul>
             </div>
         </div>
     </div>
@@ -50,19 +50,26 @@
 
     var arrow_nav = new Arrow('map_stream_nav', "load_nav_point", "get_point_nav","arr_nav");
     var arrow_pose = new Arrow('map_stream_nav', "load_pose", "set_pose","arr_nav");
-    var stream_nav = document.getElementById('map_stream_nav');
+    var stream_nav = document.getElementById('map_nav_body');
+    var body_nav = document.getElementById("map_body_nav_row");
+    var map_nav = document.getElementById("map_stream_nav");
 
-    var timerId = setInterval(updatesize, 100);
+    var timerId = setInterval(updatesize, 100, stream_nav, body_nav, map_nav);
+    var feedback_nav_timer = setInterval(get_feedback, 500, "status_list_nav");
 
     function updatesize(){
-        if (stream_nav.offsetHeight > body.offsetHeight){
+        if (stream_nav.offsetHeight > body_nav.offsetHeight){
             stream_nav.style.width = "auto";
-            stream_nav.style.height = body.offsetHeight + 'px';
+            stream_nav.style.height = "100%";
+            map_nav.style.height = "100%";
+            map_nav.style.width = "auto";
         }
 
-        else{
+        else if(stream_nav.offsetWidth > body_nav.offsetWidth){
             stream_nav.style.width = "100%";
-            stream_nav.style.height = 'auto'; 
+            stream_nav.style.height = 'auto';
+            map_nav.style.width = "100%" 
+            map_nav.style.height = "auto";
         }
     }
 

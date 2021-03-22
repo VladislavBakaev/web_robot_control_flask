@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <div class="row" style="height: 70%;">
+            <div class="row" style="height: 40%;">
                 <div class="col-1-2" style="height: 100%;">
                     <div class="center" style="width: 100%; height: 100%;">
                         <img src="/static/images/joystick-base.png" width="50%"/>
@@ -38,8 +38,9 @@
                 </div>
             </div>
 
-            <div class="row center" style="height: 10%;">
-                <p>Статус</p>
+            <div class="row center" style="height: 40%;">
+                <ul id="status_list"  class="category-list">
+                </ul>
             </div>
         </div>
     </div>
@@ -50,23 +51,8 @@
     var stream = document.getElementById('map_body');
     var body = document.getElementById("map_body_row");
     var map = document.getElementById("map_stream_slam");
-    var timerId = setInterval(updatesize, 100);
-
-    function updatesize(){
-        if (stream.offsetHeight > body.offsetHeight){
-            stream.style.width = "auto";
-            stream.style.height = "100%";
-            map.style.height = "100%";
-            map.style.width = "auto";
-        }
-
-        else if(stream.offsetWidth > body.offsetWidth){
-            stream.style.width = "100%";
-            stream.style.height = 'auto';
-            map.style.width = "100%" 
-            map.style.height = "auto";
-        }
-    }
+    var update_size_timer = setInterval(updatesize, 100, stream, body, map);
+    var feedback_timer = setInterval(get_feedback, 500, "status_list");
 
     var joystick1 = new JoystickController("stick1", 64, 8);
     var arrow_slam = new Arrow('map_stream_slam', "load_slam_point", "get_point_slam", "arr_slam");

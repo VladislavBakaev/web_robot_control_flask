@@ -125,6 +125,9 @@ class PointClientManager():
     
     def set_pose(self, x, y, angle):
         self.t_p_c.set_pose(x, y, angle)
+    
+    def get_feedback(self):
+        return self.t_p_c.get_feedback()
 
 module_names = ['map_to_pic']
 load_module(module_names)

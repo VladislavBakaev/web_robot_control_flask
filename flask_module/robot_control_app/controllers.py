@@ -4,6 +4,7 @@ from flask import (
     Response, 
     make_response,
     request)
+import json
 
 from robot_control_app.utils import map_manager, module_manager, point_manager
 
@@ -92,3 +93,9 @@ def remout_control():
 @module.route('/get_states', methods=['GET'])
 def get_status():
     return Response('Sensors, chassis and system status')
+
+@module.route('/get_task_status', methods=["GET"])
+def get_task_status():
+    status = point_manager.get_feedback()
+    status = json.dumps(status)
+    return Response(status)
