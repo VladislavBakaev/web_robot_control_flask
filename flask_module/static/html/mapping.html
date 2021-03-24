@@ -2,7 +2,7 @@
     <div class="row" style="height: 100%;">
         <div id ='map_body_row' class="col-1-2 center" style="height: 100%;">
             <div id='map_body' style="position: relative; width: 100%;">
-                <img id='map_stream_slam' src="/map/stream" width = "100%"/>
+                <img id='map_stream_slam' src="/static/images/slam_load.png" width = "100%"/>
                 <div id = "arr_slam" class="arrow" style ="width: 3%; position: absolute; left: 10%; top: 50%; z-index: 1; display: none;">
                     <img src = "/static/images/arrow.png" width ="100%">
                 </div>
@@ -15,7 +15,7 @@
                     <input id='get_point_slam' onclick="get_point_slam()" type="button" value="Задать целевую точку" style="height:60px;width:70%">
                 </div>
                 <div class="col-1-2 center">
-                    <input onclick="send_flag('start_slam')" type="button" value="Запустить SLAM" style="word-break: break-all; height:60px;width:70%">
+                    <input onclick="start_slam('map_stream_slam')" type="button" value="Запустить SLAM" style="word-break: break-all; height:60px;width:70%">
                 </div>
             </div>
 
@@ -33,7 +33,7 @@
                         <input onclick="send_flag('save_map')" type="button" value="Сохранить построенную карту" style="height:60px;width:70%">
                     </div>
                     <div class="row center" style="height: 50%;">
-                        <input onclick="send_flag('stop_slam')" type="button" value="Остановить SLAM" style="height:60px;width:70%">
+                        <input onclick="stop_slam('map_stream_slam')" type="button" value="Остановить SLAM" style="height:60px;width:70%">
                     </div>
                 </div>
             </div>

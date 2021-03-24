@@ -10,6 +10,7 @@
 		<script src="/static/js/main.js"></script>
 		<script src="/static/js/arrow.js"></script>
 		<script src="/static/js/map_nav.js"></script>
+		<script src="/static/js/map_zone.js"></script>
 	</head>
 
 	<body>
@@ -21,7 +22,7 @@
 				<input onclick="visible('mapping')" type="button" value="SLAM (построить карту)" style="height:100%; width:70%">
 			</div>
 			<div class="col-1-4 center" style="height: 100%;">
-				<input onclick="visible('map_zone')" type="button" value="Разметка карты"  style="height:100%;width:70%">
+				<input id="map_zone_button" onclick="visible('map_zone')" type="button" value="Разметка карты"  style="height:100%;width:70%">
 			</div>
 			<div class="col-1-4 center" style="height: 100%;">	
 				<input onclick="visible('navigation')" type="button" value="Навигация по построенной карте"  style="height:100%;width:70%">
@@ -66,12 +67,10 @@
 		$(window).resize(function(){
 			update_height()
 		});
-		function update_height(){
-			document.getElementById("content-body").style.height = $(window).height()*0.75+"px";
-			document.getElementById("container-header").style.height = $(window).height()*0.05+"px";
-			document.getElementById("header").style.height = $(window).height()*0.05+"px";
-			document.getElementById("footer").style.height = $(window).height()*0.1+"px";
-		}
+		$('#map_zone_button').click(function(){
+			load_img_canvas('canvasMap', "get_map");
+			load_img_canvas('canvasObv','get_zone_map');
+		})
 	</script>
 
 </html>

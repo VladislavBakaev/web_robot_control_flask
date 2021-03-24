@@ -62,3 +62,10 @@ function loop()
     requestAnimationFrame(loop);
     update();
 }
+
+function update_height(){
+    document.getElementById("content-body").style.height = $(window).height()*0.75+"px";
+    document.getElementById("container-header").style.height = $(window).height()*0.05+"px";
+    document.getElementById("header").style.height = $(window).height()*0.05+"px";
+    document.getElementById("footer").style.height = $(window).height()*0.1+"px";
+}

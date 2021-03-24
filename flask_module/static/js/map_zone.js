@@ -8,9 +8,9 @@ function load_img_canvas(canvasName, api_metod){
     var ctx = canvas.getContext('2d');
     var img = new Image();
     img.src = '/api/'+api_metod;
-    img.onload = test
+    img.onload = draw_load_img
 
-    function test(){
+    function draw_load_img(){
         ctx.drawImage(this,0,0,500,500);
     };
 };
