@@ -1,0 +1,33 @@
+input {
+    font-family: 'Oswald', sans-serif;
+    white-space: normal;
+    letter-spacing:2px;
+    font-size:12px;
+    height:50%;
+    width:70%;
+    border: 0;
+    text-align: center;
+    color: #fff;
+    text-shadow: 1px 1px 1px #000;
+    border-radius: 20px;
+    background-color: #bc4123;
+    font-weight: 500;
+    background-image: linear-gradient(to top left,
+                                      rgba(0, 0, 0, .2),
+                                      rgba(0, 0, 0, .2) 30%,
+                                      rgba(0, 0, 0, 0));
+}
+
+input:hover {
+    background-color: #d64f2d;
+}
+
+input:active {
+    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
+                inset 2px 2px 3px rgba(0, 0, 0, .6);
+}
+
+input.disabled{
+    pointer-events:none;
+    background-color: #615b59;
+}

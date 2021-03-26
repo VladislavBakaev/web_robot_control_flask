@@ -11,10 +11,10 @@
         <div class="col-1-2" style="height: 100%;">
             <div class="row" style="height: 20%;">
                 <div class="col-1-2 center">
-                    <input id="get_point_nav" onclick="get_point_nav()" type="button" value="Задать целевую точку" style="height:60px;width:70%">
+                    <input id="get_point_nav" onclick="get_point_nav()" type="button" value="Задать целевую точку" class="disabled">
                 </div>
                 <div class="col-1-2 center">
-                    <input onclick="start_nav('map_stream_nav')" type="button" value="Запустить навигацию" style="word-break: break-all; height:60px;width:70%">
+                    <input onclick="start_nav(this, 'map_stream_nav')" type="button" value="Запустить навигацию">
                 </div>
             </div>
 
@@ -29,10 +29,10 @@
                 </div>
                 <div class="col-1-2" style="height: 100%;">
                     <div class="row center" style="height: 50%;">
-                        <input onclick="stop_nav('map_stream_nav')" type="button" value="Остановить навигацию" style="height:60px;width:70%">
+                        <input onclick="stop_nav('map_stream_nav')" type="button" value="Остановить навигацию" class="disabled">
                     </div>
                     <div class="row center" style="height: 50%;">
-                        <input id="set_pose" onclick="set_pose()" type="button" value="Указать текущую позицию и ориентацию робота" style="height:60px;width:70%">
+                        <input id="set_pose" onclick="set_pose()" type="button" value="Указать текущую позицию и ориентацию робота" class="disabled">
                     </div>
                 </div>
             </div>
@@ -53,9 +53,10 @@
     var stream_nav = document.getElementById('map_nav_body');
     var body_nav = document.getElementById("map_body_nav_row");
     var map_nav = document.getElementById("map_stream_nav");
+    var inputs_nav = $('section#navigation input')
 
     var timerId = setInterval(updatesize, 100, stream_nav, body_nav, map_nav);
-    var feedback_nav_timer = setInterval(get_feedback, 500, "status_list_nav");
+    var feedback_nav_timer = setInterval(get_feedback, 300, "status_list_nav");
 
     function get_point_nav(){
         arrow_nav.flag_point = true;

@@ -1,0 +1,21 @@
+html{
+    height: 100%;
+}
+
+section{
+    height: 100%;
+}
+
+body{
+    background:#0b172a;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    padding: 0 50px;
+}
+
+body > div#content-body > section { display:none; }
+        
+body.slam > div#content-body > section#slam,
+body.map-zone > div#content-body > section#map-zone,
+body.navigation > div#content-body > section#navigation,
+body.control > div#content-body > section#control  { display:block; }

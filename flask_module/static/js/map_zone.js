@@ -2,18 +2,45 @@ var mousePressed = false;
 var lastX, lastY;
 var ctx;
 var eraser;
+var canv_h;
+var canv_w;
 
-function load_img_canvas(canvasName, api_metod){
-    canvas = document.getElementById(canvasName);
+function load_img_canvas(canvasName, map_api){
+    var canvas = document.getElementById(canvasName);
+    console.log('tyt')
     var ctx = canvas.getContext('2d');
-    var img = new Image();
-    img.src = '/api/'+api_metod;
-    img.onload = draw_load_img
+    var map = new Image();
+    map.src = '/api/'+map_api;
 
-    function draw_load_img(){
-        ctx.drawImage(this,0,0,500,500);
+    if(canvasName == "canvasMap"){
+        map.onload = draw_load_map
+    }
+    else{
+        map.onload = draw_load_obv
+    }
+
+    function draw_load_map(){
+        if(this.height < this.width){
+            canv_w = canvas.parentNode.getBoundingClientRect().width*0.7;
+            canv_h = this.height*(canv_w/this.width);
+        }
+        else{
+            canv_h = canvas.parentNode.getBoundingClientRect().height*0.7;
+            canv_w = this.width*(canv_h/this.height);
+        }
+        canvas.width = canv_w;
+        canvas.height = canv_h;
+
+        ctx.drawImage(this,0,0,canv_w,canv_h);
+
     };
+    function draw_load_obv(){
+        canvas.width = canv_w;
+        canvas.height = canv_h;
+        ctx.drawImage(this,0,0,canv_w,canv_h);
+    }
 };
+
 function create_zone(){
     eraser = true;
 };
@@ -38,10 +65,10 @@ function save_zone(){
         data: form_data,                         
         type: 'post',
         success: function(script_response){
-            alert(script_response);
+            console.log(script_response);
         },
         error:function(xhr, status, errorThrown) { 
-                alert(errorThrown+'\n'+status+'\n'+xhr.statusText); 
+            console.log(errorThrown+'\n'+status+'\n'+xhr.statusText); 
             } 
  });
 };

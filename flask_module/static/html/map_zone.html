@@ -1,28 +1,32 @@
 <div class="container" style="height: 100%;">
     <div class="row" style="height: 100%;">
-        <div class="col-1-2 center" style="height: 100%;">
-            <canvas id="canvasMap" width="500px" height="500px" style="position: relative;"></canvas>
-            <canvas id="canvasObv" width="500px" height="500px" style="position: absolute; z-index: 2;"></canvas>
+        <div class="col-2-3 center">
+            <canvas id="canvasMap" style="position: relative;"></canvas>
+            <canvas id="canvasObv" style="position: absolute; z-index: 2;"></canvas>
         </div>
-        <div class="col-1-2" style="height: 100%;">
-            <div class="row center" style="height:  25%;">
-                <input onclick="create_zone()" type="button" value="Добавить запрещенные зоны" style="height:60px;width:70%">
+        <div class="col-1-3" style="height: 100%;">
+            <div class="row" style="height: 20%;"></div>
+            <div class="row center" style="height:  15%;">
+                <input onclick="create_zone()" type="button" value="Добавить запрещенные зоны">
             </div>
-            <div class="row center" style="height: 25%;">
-                <input onclick="delete_zone()" type="button" value="Редактировать запрещенные" style="height:60px;width:70%">
+            <div class="row center" style="height: 15%;">
+                <input onclick="delete_zone()" type="button" value="Редактировать запрещенные">
             </div>
-            <div class="row center" style="height: 25%;">
-                <input onclick="clear_zone()" type="button" value="Убрать запрещенные зоны" style="height:60px;width:70%">
+            <div class="row center" style="height: 15%;">
+                <input onclick="clear_zone()" type="button" value="Убрать запрещенные зоны">
             </div>
-            <div class="row center" style="height: 25%;">
-                <input onclick="save_zone()" type="button" value="Сохранить запрещенные зоны" style="height:60px;width:70%">
+            <div class="row center" style="height: 15%;">
+                <input onclick="save_zone()" type="button" value="Сохранить запрещенные зоны">
             </div>
+            <div class="row" style="height: 20%;"></div>
         </div>
     </div>
 </div>
 
 <script>
     $(document).ready(function() {
+        setTimeout(load_img_canvas, 100, 'canvasMap', "get_map");
+        setTimeout(load_img_canvas, 200, 'canvasObv','get_zone_map');
         InitThis('canvasObv');
     }); 
 </script>

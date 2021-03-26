@@ -12,10 +12,10 @@
         <div class="col-1-2" style="height: 100%;">
             <div class="row" style="height: 20%;">
                 <div class="col-1-2 center">
-                    <input id='get_point_slam' onclick="get_point_slam()" type="button" value="Задать целевую точку" style="height:60px;width:70%">
+                    <input id='get_point_slam' onclick="get_point_slam()" type="button" value="Задать целевую точку" class = 'disabled'>
                 </div>
                 <div class="col-1-2 center">
-                    <input onclick="start_slam('map_stream_slam')" type="button" value="Запустить SLAM" style="word-break: break-all; height:60px;width:70%">
+                    <input onclick="start_slam(this,'map_stream_slam')" type="button" value="Запустить SLAM">
                 </div>
             </div>
 
@@ -30,10 +30,10 @@
                 </div>
                 <div class="col-1-2" style="height: 100%;">
                     <div class="row center" style="height: 50%;">
-                        <input onclick="send_flag('save_map')" type="button" value="Сохранить построенную карту" style="height:60px;width:70%">
+                        <input onclick="send_flag('save_map')" type="button" value="Сохранить построенную карту" class = 'disabled'>
                     </div>
                     <div class="row center" style="height: 50%;">
-                        <input onclick="stop_slam('map_stream_slam')" type="button" value="Остановить SLAM" style="height:60px;width:70%">
+                        <input onclick="stop_slam('map_stream_slam')" type="button" value="Остановить SLAM" class = 'disabled'>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,8 @@
     var body = document.getElementById("map_body_row");
     var map = document.getElementById("map_stream_slam");
     var update_size_timer = setInterval(updatesize, 100, stream, body, map);
-    var feedback_timer = setInterval(get_feedback, 500, "status_list");
+    var feedback_timer = setInterval(get_feedback, 300, "status_list");
+    var inputs_slam = $('section#slam input')
 
     var joystick1 = new JoystickController("stick1", 64, 8);
     var arrow_slam = new Arrow('map_stream_slam', "load_slam_point", "get_point_slam", "arr_slam");

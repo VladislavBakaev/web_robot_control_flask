@@ -1,13 +1,16 @@
+var start_slam_btn;
+var start_nav_btn;
+
 function send_flag(route){
     $.ajax({
             type: "GET",  
             url: "/api/"+route,  
             cache: false,  
             success: function(text){  
-                alert(text);  
+                console.log(text);  
             },
             error:function(xhr, status, errorThrown) { 
-                alert(errorThrown+'\n'+status+'\n'+xhr.statusText); 
+                console.log(errorThrown+'\n'+status+'\n'+xhr.statusText); 
             }  
         });
 }
@@ -27,7 +30,7 @@ function get_feedback(list_name){
                                     <li>Current pose:<span>x: ${status_json["current_pose"]["x"]}; y: ${status_json["current_pose"]["y"]}; angle: ${status_json["current_pose"]["angle"]}</span></li>`)
         },
         error:function(xhr, status, errorThrown) { 
-            alert(errorThrown+'\n'+status+'\n'+xhr.statusText); 
+            console.log(errorThrown+'\n'+status+'\n'+xhr.statusText); 
         }  
     });
 }
@@ -48,22 +51,38 @@ function updatesize(stream, body, map){
     }
 }
 
-function start_slam(stream){
+function start_slam(elem, stream){
     $("#"+stream).attr('src', '/map/stream');
     send_flag("start_slam");
+    var disabled = inputs_slam.find('.disabled')['prevObject'];
+    disabled.removeClass('disabled');
+    $(elem).addClass('disabled');
+    start_slam_btn = elem;
+    nav.find('a').addClass('disabled')
 }
 
 function stop_slam(stream){
     $("#"+stream).attr('src', '/static/images/slam_load.png');
     send_flag("stop_slam");
+    inputs_slam.addClass('disabled');
+    $(start_slam_btn).removeClass('disabled')
+    nav.find('a').removeClass('disabled')
 }
 
-function start_nav(stream){
+function start_nav(elem, stream){
     $("#"+stream).attr('src', '/map/stream');
     send_flag("start_nav");
+    var disabled = inputs_nav.find('.disabled')['prevObject'];
+    disabled.removeClass('disabled');
+    $(elem).addClass('disabled');
+    start_nav_btn = elem;
+    nav.find('a').addClass('disabled')
 }
 
 function stop_nav(stream){
     $("#"+stream).attr('src', '/static/images/nav_load.png');
     send_flag("stop_nav");
+    inputs_nav.addClass('disabled')
+    $(start_nav_btn).removeClass('disabled')
+    nav.find('a').removeClass('disabled')
 }

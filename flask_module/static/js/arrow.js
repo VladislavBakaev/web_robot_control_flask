@@ -62,10 +62,10 @@ class Arrow{
                     data: JSON.stringify({"x":x, "y":y, "angle":angle}),                         
                     type: 'post',
                     success: function(script_response){
-                        alert(script_response);
+                        console.log(script_response);
                     },
                     error:function(xhr, status, errorThrown) { 
-                            alert(errorThrown+'\n'+status+'\n'+xhr.statusText); 
+                        console.log(errorThrown+'\n'+status+'\n'+xhr.statusText); 
                         } 
                 });
             }
