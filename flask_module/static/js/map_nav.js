@@ -35,30 +35,18 @@ function get_feedback(list_name){
     });
 }
 
-function updatesize(stream, body, map){
-    if (stream.offsetHeight > body.offsetHeight){
-        stream.style.width = "auto";
-        stream.style.height = "100%";
-        map.style.height = "100%";
-        map.style.width = "auto";
-    }
-
-    else if(stream.offsetWidth > body.offsetWidth){
-        stream.style.width = "100%";
-        stream.style.height = 'auto';
-        map.style.width = "100%" 
-        map.style.height = "auto";
-    }
-}
-
-function start_slam(elem, stream){
+function start_slam(elem, stream, mapManager){
     $("#"+stream).attr('src', '/map/stream');
     send_flag("start_slam");
     var disabled = inputs_slam.find('.disabled')['prevObject'];
     disabled.removeClass('disabled');
     $(elem).addClass('disabled');
     start_slam_btn = elem;
-    nav.find('a').addClass('disabled')
+    nav.find('a').addClass('disabled');
+
+    mapManager.enable = true;
+    $("#"+stream).width('auto')
+    $("#"+stream).parent().parent().css("background-color" ,"rgb(200, 200, 200)");
 }
 
 function stop_slam(stream){
@@ -67,6 +55,13 @@ function stop_slam(stream){
     inputs_slam.addClass('disabled');
     $(start_slam_btn).removeClass('disabled')
     nav.find('a').removeClass('disabled')
+
+    mapManager.enable = false;
+    mapManager.wheel = 0;
+    $("#"+stream).width('100%')
+    $("#"+stream).parent().parent().css("background-color" ,"");
+    $("#"+stream).css("transform","scale(1)");
+    $("#"+stream).parent().css("transform","translate3d( 0px, 0px, 0 )")
 }
 
 function start_nav(elem, stream){
@@ -77,6 +72,10 @@ function start_nav(elem, stream){
     $(elem).addClass('disabled');
     start_nav_btn = elem;
     nav.find('a').addClass('disabled')
+
+    mapManager_nav.enable = true;
+    $("#"+stream).width('auto')
+    $("#"+stream).parent().parent().css("background-color" ,"rgb(255, 255, 255)");
 }
 
 function stop_nav(stream){
@@ -85,4 +84,11 @@ function stop_nav(stream){
     inputs_nav.addClass('disabled')
     $(start_nav_btn).removeClass('disabled')
     nav.find('a').removeClass('disabled')
+
+    mapManager_nav.enable = false;
+    mapManager_nav.wheel = 0;
+    $("#"+stream).width('100%')
+    $("#"+stream).parent().parent().css("background-color" ,"");
+    $("#"+stream).css("transform","scale(1)");
+    $("#"+stream).parent().css("transform","translate3d( 0px, 0px, 0 )")
 }

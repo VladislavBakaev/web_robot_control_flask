@@ -1,8 +1,9 @@
 <div class="container" style="height: 100%;">
-        <div id ='map_body_nav_row' class="col-1-2 center" style="height: 100%;">
-            <div id='map_nav_body' style="position: relative; width: 100%;">
+    <div class = "row" style="height: 100%;">
+        <div id ='map_body_nav_row' class="col-1-2 center camera">
+            <div id='map_nav_body' calss = 'centre' style="position: relative; height: auto;">
                 <img id='map_stream_nav' src="/static/images/nav_load.png" width = "100%"/>
-                <div id = "arr_nav" class="arrow" style ="width: 3%; position: absolute; left: 10%; top: 50%; z-index: 1; display: none;">
+                <div id = "arr_nav" class="arrow" style ="width: 10%; position: absolute; left: 10%; top: 50%; z-index: 1; display: none;">
                     <img src = "/static/images/arrow.png" width ="100%">
                 </div>
             </div>
@@ -50,12 +51,9 @@
 
     var arrow_nav = new Arrow('map_stream_nav', "load_nav_point", "get_point_nav","arr_nav");
     var arrow_pose = new Arrow('map_stream_nav', "load_pose", "set_pose","arr_nav");
-    var stream_nav = document.getElementById('map_nav_body');
-    var body_nav = document.getElementById("map_body_nav_row");
-    var map_nav = document.getElementById("map_stream_nav");
+    var mapManager_nav = new MapMoveManager("map_stream_nav",'map_nav_body')
     var inputs_nav = $('section#navigation input')
 
-    var timerId = setInterval(updatesize, 100, stream_nav, body_nav, map_nav);
     var feedback_nav_timer = setInterval(get_feedback, 300, "status_list_nav");
 
     function get_point_nav(){

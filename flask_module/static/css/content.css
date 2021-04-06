@@ -31,3 +31,9 @@ input.disabled{
     pointer-events:none;
     background-color: #615b59;
 }
+
+.camera{
+    height: 100%;
+    overflow: hidden;
+    /* background-color: rgb(199, 198, 198); */
+}

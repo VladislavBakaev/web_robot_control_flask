@@ -1,8 +1,7 @@
+var currentPageName = null;
 (function($,window){
 
     var pageHandlers = {};
-  
-    var currentPageName = null;
     var $currentPage = null;
   
     function show(pageName,param) {

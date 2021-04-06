@@ -1,9 +1,9 @@
 <div class="container" style="height: 100%;">
-    <div class="row" style="height: 100%;">
-        <div id ='map_body_row' class="col-1-2 center" style="height: 100%;">
-            <div id='map_body' style="position: relative; width: 100%;">
-                <img id='map_stream_slam' src="/static/images/slam_load.png" width = "100%"/>
-                <div id = "arr_slam" class="arrow" style ="width: 3%; position: absolute; left: 10%; top: 50%; z-index: 1; display: none;">
+    <div class = "row" style="height: 100%;">
+        <div id ='map_body_row' class="col-1-2 center camera">
+            <div id='map_body' class="center" style="position: relative; height: auto;">
+                <img id='map_stream_slam' src="/static/images/slam_load.png" width="100%"/>
+                <div id = "arr_slam" class="arrow" style ="width: 10%; position: absolute; left: 10%; top: 50%; z-index: 1; display: none;">
                     <img src = "/static/images/arrow.png" width ="100%">
                 </div>
             </div>
@@ -15,7 +15,7 @@
                     <input id='get_point_slam' onclick="get_point_slam()" type="button" value="Задать целевую точку" class = 'disabled'>
                 </div>
                 <div class="col-1-2 center">
-                    <input onclick="start_slam(this,'map_stream_slam')" type="button" value="Запустить SLAM">
+                    <input onclick="start_slam(this,'map_stream_slam', mapManager)" type="button" value="Запустить SLAM">
                 </div>
             </div>
 
@@ -47,16 +47,13 @@
 </div>
 
 <script>
-
-    var stream = document.getElementById('map_body');
-    var body = document.getElementById("map_body_row");
-    var map = document.getElementById("map_stream_slam");
-    var update_size_timer = setInterval(updatesize, 100, stream, body, map);
     var feedback_timer = setInterval(get_feedback, 300, "status_list");
     var inputs_slam = $('section#slam input')
 
     var joystick1 = new JoystickController("stick1", 64, 8);
     var arrow_slam = new Arrow('map_stream_slam', "load_slam_point", "get_point_slam", "arr_slam");
+    var mapManager = new MapMoveManager("map_stream_slam",'map_body')
+
     function get_point_slam(){
         arrow_slam.flag_point = true;
         arrow_slam.cliked = 0;

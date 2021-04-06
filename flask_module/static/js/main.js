@@ -1,5 +1,4 @@
-var name_arr = ["mapping","map_zone","navigation","control"]
-var current_page = "";
+var rate = 5
 
 const chatSocket = new WebSocket(
     'ws://' + window.location.hostname + ':5000/ws/joy'
@@ -7,18 +6,18 @@ const chatSocket = new WebSocket(
 
 function update()
 {
-    if(current_page=="mapping"){
+    if(currentPageName=="slam"){
         chatSocket.send(JSON.stringify({
                 'value': JSON.stringify(joystick1.value)
             }));
     }
 
-    if(current_page=="navigation"){
+    if(currentPageName=="navigation"){
         chatSocket.send(JSON.stringify({
                 'value': JSON.stringify(joystick2.value)
             }));
     }
-    if(current_page=="control"){
+    if(currentPageName=="control"){
         chatSocket.send(JSON.stringify({
                 'value': JSON.stringify(joystick2.value)
             }));
@@ -27,8 +26,8 @@ function update()
 
 function loop()
 {
-    requestAnimationFrame(loop);
-    //update();
+    setTimeout(requestAnimationFrame, 1000/rate, loop);
+    update();
 }
 
 function update_height(){

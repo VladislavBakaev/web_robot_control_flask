@@ -7,7 +7,6 @@ var canv_w;
 
 function load_img_canvas(canvasName, map_api){
     var canvas = document.getElementById(canvasName);
-    console.log('tyt')
     var ctx = canvas.getContext('2d');
     var map = new Image();
     map.src = '/api/'+map_api;
