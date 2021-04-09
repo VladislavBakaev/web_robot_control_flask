@@ -16,6 +16,12 @@ def load_module(module_name_list):
         module_path = os.path.join(ws_path, module_name, module_name)
         sys.path.insert(0, module_path)
 
+def load_ar_module(module_name_list):
+    ws_path = pathlib.Path(__file__).parent.parent.parent.parent.absolute()
+    for module_name in module_name_list:
+        module_path = os.path.join(ws_path, "AR_HT_01",module_name, module_name)
+        sys.path.insert(0, module_path)
+
 def get_image_path(static_folder,name): 
     load_path =  os.path.join(pathlib.Path(__file__).parent.parent,"static",static_folder,name)
     return load_path
@@ -129,12 +135,27 @@ class PointClientManager():
     def get_feedback(self):
         return self.t_p_c.get_feedback()
 
-module_names = ['map_to_pic']
-load_module(module_names)
+class ApiManager():
+    def __init__(self):
+        self.a_h_api = AR_HT_api()
+        #self.ros_th = Thread(target = self.start_node, args=(self.a_h_api, )).start()
+    
+    def start_node(self, node):
+        rclpy.spin(node)
 
+    def lift_cmd(self, cmd):
+        self.a_h_api.lift(cmd)
+
+module_names = ['map_to_pic']
+module_ar_names = ["AR_HT_api"]
+load_module(module_names)
+load_ar_module(module_ar_names)
+
+from ar_api import AR_HT_api
 from nav_action import ToPoseClient, rclpy
 rclpy.init()
 
 module_manager = ModuleManager()
 map_manager = MapManager()
 point_manager = PointClientManager()
+api_manager = ApiManager()

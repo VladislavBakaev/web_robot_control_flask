@@ -44,9 +44,7 @@ function start_slam(elem, stream, mapManager){
     start_slam_btn = elem;
     nav.find('a').addClass('disabled');
 
-    mapManager.enable = true;
-    $("#"+stream).width('auto')
-    $("#"+stream).parent().parent().css("background-color" ,"rgb(200, 200, 200)");
+    mapManager.enable(true, "200, 200, 200");
 }
 
 function stop_slam(stream){
@@ -56,12 +54,7 @@ function stop_slam(stream){
     $(start_slam_btn).removeClass('disabled')
     nav.find('a').removeClass('disabled')
 
-    mapManager.enable = false;
-    mapManager.wheel = 0;
-    $("#"+stream).width('100%')
-    $("#"+stream).parent().parent().css("background-color" ,"");
-    $("#"+stream).css("transform","scale(1)");
-    $("#"+stream).parent().css("transform","translate3d( 0px, 0px, 0 )")
+    mapManager.enable(false);
 }
 
 function start_nav(elem, stream){
@@ -73,22 +66,29 @@ function start_nav(elem, stream){
     start_nav_btn = elem;
     nav.find('a').addClass('disabled')
 
-    mapManager_nav.enable = true;
-    $("#"+stream).width('auto')
-    $("#"+stream).parent().parent().css("background-color" ,"rgb(255, 255, 255)");
+    mapManager_nav.enable(true,  "255, 255, 255");
 }
 
 function stop_nav(stream){
     $("#"+stream).attr('src', '/static/images/nav_load.png');
     send_flag("stop_nav");
     inputs_nav.addClass('disabled')
+    $("#lift").removeClass('disabled')
     $(start_nav_btn).removeClass('disabled')
     nav.find('a').removeClass('disabled')
 
-    mapManager_nav.enable = false;
-    mapManager_nav.wheel = 0;
-    $("#"+stream).width('100%')
-    $("#"+stream).parent().parent().css("background-color" ,"");
-    $("#"+stream).css("transform","scale(1)");
-    $("#"+stream).parent().css("transform","translate3d( 0px, 0px, 0 )")
+    mapManager_nav.enable(false);
+}
+
+function lift_cmd(input){
+    let key = $(input).val()[0]
+    if (key === "П"){
+        $(input).val("Опустить паллету")
+        $.get( "/api/lift", { lift: "true"} );
+    }
+    else{
+        $(input).val("Поднять паллету")
+        $.get( "/api/lift", { lift: "false"} );
+    }
+
 }

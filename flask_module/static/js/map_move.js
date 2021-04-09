@@ -7,7 +7,19 @@ class MapMoveManager{
         this.last_point = {x:0, y:0}
         this.touch_point = {x:0, y:0}
 
-        this.enable = false;
+        this.enable = function(flag, color = 0){
+            if (flag){
+                $("#"+img_name).width('auto')
+                $("#"+img_name).parent().parent().css("background-color" ,`rgb(${color})`);
+            }
+            else{
+                this.wheel = 0;
+                $("#"+img_name).width('100%')
+                $("#"+img_name).parent().parent().css("background-color" ,"");
+                $("#"+img_name).css("transform","scale(1)");
+                $("#"+img_name).parent().css("transform","translate3d( 0px, 0px, 0 )")
+            }
+        }
         img.style.transform = `scale(1)`
 
         this.wheel = 0

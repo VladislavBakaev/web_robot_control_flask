@@ -6,7 +6,7 @@ from flask import (
     request)
 import json
 
-from robot_control_app.utils import map_manager, module_manager, point_manager
+from robot_control_app.utils import map_manager, module_manager, point_manager, api_manager
 
 module = Blueprint('html', __name__, url_prefix=r'/api')
 
@@ -99,3 +99,12 @@ def get_task_status():
     status = point_manager.get_feedback()
     status = json.dumps(status)
     return Response(status)
+
+@module.route('/lift', methods=["GET"])
+def lift_cmd():
+    cmd = request.args.get("lift")
+    if cmd == "true":
+        api_manager.lift_cmd(True)
+    else:
+        api_manager.lift_cmd(False)
+    return Response("Lift state was change")

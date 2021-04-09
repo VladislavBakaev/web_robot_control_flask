@@ -29,11 +29,14 @@
                     </div>
                 </div>
                 <div class="col-1-2" style="height: 100%;">
-                    <div class="row center" style="height: 50%;">
+                    <div class="row center" style="height: 33%;">
                         <input onclick="stop_nav('map_stream_nav')" type="button" value="Остановить навигацию" class="disabled">
                     </div>
-                    <div class="row center" style="height: 50%;">
+                    <div class="row center" style="height: 33%;">
                         <input id="set_pose" onclick="set_pose()" type="button" value="Указать текущую позицию и ориентацию робота" class="disabled">
+                    </div>
+                    <div class="row center" style="height: 33%;">
+                        <input id="lift" onclick="lift_cmd(this)" type="button" value="Поднять паллету">
                     </div>
                 </div>
             </div>
