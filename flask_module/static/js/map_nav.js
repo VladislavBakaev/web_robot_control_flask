@@ -1,11 +1,17 @@
 var start_slam_btn;
 var start_nav_btn;
 
+var action_feedback = new WebSocket('ws://' + window.location.hostname + ':5000/ws/action_feedback');
+action_feedback.onmessage = function(event){
+    display_feedback(event.data, "status_list");
+    display_feedback(event.data, "status_list_nav");
+};
+
 function send_flag(route){
     $.ajax({
             type: "GET",  
-            url: "/api/"+route,  
-            cache: false,  
+            url: "/api/"+route,
+            cache: false,
             success: function(text){  
                 console.log(text);  
             },
@@ -14,25 +20,15 @@ function send_flag(route){
             }  
         });
 }
-function get_feedback(list_name){
+function display_feedback(text,list_name){
 
-    $.ajax({
-        type: "GET",  
-        url: "/api/get_task_status",  
-        cache: false,  
-        success: function(text){
-            var status_json = JSON.parse(text);
-            $("#"+list_name).html(`<li>State:<span>${status_json["state"]}</span></li>
-                                    <li>Number of recoveries:<span>${status_json["number_of_recoveries"]}</span></li>
-                                    <li>Distance remaining:<span>${status_json["distance_remaining"]}</span></li>
-                                    <li>Navigation time:<span>${status_json["navigation_time"]}</span></li>
-                                    <li>Target point:<span>x: ${status_json["target"]["x"]}; y: ${status_json["target"]["y"]}; angle: ${status_json["target"]["angle"]}</span></li>
-                                    <li>Current pose:<span>x: ${status_json["current_pose"]["x"]}; y: ${status_json["current_pose"]["y"]}; angle: ${status_json["current_pose"]["angle"]}</span></li>`)
-        },
-        error:function(xhr, status, errorThrown) { 
-            console.log(errorThrown+'\n'+status+'\n'+xhr.statusText); 
-        }  
-    });
+    var status_json = JSON.parse(text);
+    $("#"+list_name).html(`<li>State:<span>${status_json["state"]}</span></li>
+                            <li>Number of recoveries:<span>${status_json["number_of_recoveries"]}</span></li>
+                            <li>Distance remaining:<span>${status_json["distance_remaining"]}</span></li>
+                            <li>Navigation time:<span>${status_json["navigation_time"]}</span></li>
+                            <li>Target point:<span>x: ${status_json["target"]["x"]}; y: ${status_json["target"]["y"]}; angle: ${status_json["target"]["angle"]}</span></li>
+                            <li>Current pose:<span>x: ${status_json["current_pose"]["x"]}; y: ${status_json["current_pose"]["y"]}; angle: ${status_json["current_pose"]["angle"]}</span></li>`)
 }
 
 function start_slam(elem, stream, mapManager){
@@ -66,7 +62,7 @@ function start_nav(elem, stream){
     start_nav_btn = elem;
     nav.find('a').addClass('disabled')
 
-    mapManager_nav.enable(true,  "255, 255, 255");
+    mapManager_nav.enable(true,  "254, 254, 254");
 }
 
 function stop_nav(stream){
